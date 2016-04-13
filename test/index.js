@@ -21,7 +21,7 @@ describe('metalsmith-jade', function () {
       should.not.exist(err)
 
       fs.exists('test/main/build/index.html', function (exists) {
-        exists.should.be.true
+        exists.should.be.exactly(true)
 
         done()
       })
@@ -37,7 +37,7 @@ describe('metalsmith-jade', function () {
       should.not.exist(err)
 
       fs.exists('test/main/build/dir/test.html', function (exists) {
-        exists.should.be.true
+        exists.should.be.exactly(true)
 
         done()
       })
@@ -59,6 +59,22 @@ describe('metalsmith-jade', function () {
       fs.readFile('test/main/build/locals.html', function (err, data) {
         should.not.exist(err)
         data.toString().should.equal('<h1>Foo</h1>')
+        done()
+      })
+    })
+  })
+
+  it('should render html files with . in their name', function (done) {
+    var smith = new Metalsmith('test/main')
+
+    smith.use(jade())
+
+    smith.build(function (err) {
+      should.not.exist(err)
+
+      fs.exists('test/main/build/index.file.html', function (exists) {
+        exists.should.be.exactly(true)
+
         done()
       })
     })
@@ -99,10 +115,10 @@ describe('metalsmith-jade', function () {
     smith.build(function (err) {
       should.not.exist(err)
 
-      fs.exists('test/main/build/text.txt', function (exists) {
-        exists.should.be.true
+      fs.exists('test/main/build/text.txt.html', function (exists) {
+        exists.should.be.exactly(true)
 
-        fs.readFile('test/main/build/text.txt', function (err, data) {
+        fs.readFile('test/main/build/text.txt.html', function (err, data) {
           should.not.exist(err)
           data.toString().should.equal('bar')
 
